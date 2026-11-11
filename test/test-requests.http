@@ -31,7 +31,7 @@ Content-Type: multipart/form-data; boundary=MyBoundary
 --MyBoundary
 Content-Disposition: form-data; name="cat_name"
 
-Dogi
+Maukuu
 --MyBoundary
 Content-Disposition: form-data; name="weight"
 
@@ -43,7 +43,7 @@ Ulla
 --MyBoundary
 Content-Disposition: form-data; name="birthdate"
 
-2022-10-08
+08.10.2022
 --MyBoundary
 Content-Disposition: form-data; name="image"; filename="cat.jpg"
 Content-Type: image/jpeg
