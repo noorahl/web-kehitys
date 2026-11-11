@@ -1,0 +1,71 @@
+# api http test requests for VSCode
+@apiUrl = http://127.0.0.1:3000/api/v1
+
+
+### get cats
+GET {{apiUrl}}/cats
+
+### get cat by id
+GET {{apiUrl}}/cats/1
+
+### get cat by id (FAIL: not found)
+GET {{apiUrl}}/cats/98
+
+# cat_name, weight, owner, filename, birthdate
+### post new cat
+POST {{apiUrl}}/cats
+Content-Type: application/json
+
+{
+    "name": "Rolle",
+    "birthdate": "25.12.2023",
+    "weight": 4,
+    "owner": "Tiina",
+    "image": "https://placecats.com/310/240"
+}
+
+### edit existing cat
+PUT {{apiUrl}}/cats/3
+Content-Type: application/json
+
+{
+    "weight": 6,
+    "owner": "Uusi omistaja"
+}
+
+### delete cat by id
+DELETE {{apiUrl}}/cats/1
+
+### get users
+GET {{apiUrl}}/users
+
+### get user by id
+GET {{apiUrl}}/users/3001
+
+### get user by id (FAIL: not found)
+GET {{apiUrl}}/users/98
+
+### post new user
+POST {{apiUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "Liisa",
+    "username": "liisa",
+    "email": "liisa@metropolia.fi",
+    "role": "user",
+    "password": "password"
+  }
+
+### edit existing user
+PUT {{apiUrl}}/users/3001
+Content-Type: application/json
+
+{
+    "email": "nikkes@metropolia.fi",
+    "role": "user",
+    "password": "password1"
+  }
+
+### delete user by id
+DELETE {{apiUrl}}/users/3000
