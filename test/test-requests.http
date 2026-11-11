@@ -61,7 +61,7 @@ Content-Type: application/json
 }
 
 ### delete cat by id
-DELETE {{apiUrl}}/cats/8
+DELETE {{apiUrl}}/cats/2
 
 ### get users
 GET {{apiUrl}}/users
