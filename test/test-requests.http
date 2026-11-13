@@ -19,7 +19,7 @@ Content-Type: application/json
     "cat_name": "Rolle",
     "birthdate": "2023-12-25",
     "weight": 4,
-    "owner": 37,
+    "owner": 39,
     "filename": "rolle.jpg"
 }
 
@@ -39,7 +39,7 @@ Content-Disposition: form-data; name="weight"
 --MyBoundary
 Content-Disposition: form-data; name="owner"
 
-37
+38
 --MyBoundary
 Content-Disposition: form-data; name="birthdate"
 
@@ -80,9 +80,9 @@ POST {{apiUrl}}/users
 Content-Type: application/json
 
 {
-    "name": "Liisa",
-    "username": "liisa",
-    "email": "liisa@metropolia.fi",
+    "name": "Maija",
+    "username": "maija",
+    "email": "maija@metropolia.fi",
     "role": "user",
     "password": "password"
   }
