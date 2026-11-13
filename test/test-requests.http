@@ -80,9 +80,9 @@ POST {{apiUrl}}/users
 Content-Type: application/json
 
 {
-    "name": "Maija",
-    "username": "maija",
-    "email": "maija@metropolia.fi",
+    "name": "Sami",
+    "username": "sami",
+    "email": "sami@metropolia.fi",
     "role": "user",
     "password": "password"
   }
@@ -99,3 +99,23 @@ Content-Type: application/json
 
 ### delete user by id
 DELETE {{apiUrl}}/users/37
+
+## /auth resource
+
+### User login
+# @name login
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "sami",
+    "password": "password"
+}
+
+### Get my user info
+GET http://localhost:3000/api/v1/auth/me
+Authorization: Bearer {{login.response.body.token}}
+
+### delete cat by id
+DELETE {{apiUrl}}/cats/60
+Authorization: Bearer {{login.response.body.token}}
