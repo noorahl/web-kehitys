@@ -6,26 +6,26 @@
 GET {{apiUrl}}/cats
 
 ### get cat by id
-GET {{apiUrl}}/cats/1
+GET {{apiUrl}}/cats/41
 
 ### get cat by id (FAIL: not found)
 GET {{apiUrl}}/cats/98
 
-# cat_name, weight, owner, filename, birthdate
 ### post new cat
 POST {{apiUrl}}/cats
 Content-Type: application/json
 
 {
     "cat_name": "Rolle",
-    "birthdate": "25.12.2023",
+    "birthdate": "2023-12-25",
     "weight": 4,
-    "owner": "Tiina",
-    "filename": "https://placecats.com/310/240"
+    "owner": 37,
+    "filename": "rolle.jpg"
 }
 
+
 ### post cat WITH IMAGE
-POST http://127.0.0.1:3000/api/v1/cats HTTP/1.1
+POST {{apiUrl}}/cats
 Content-Type: multipart/form-data; boundary=MyBoundary
 
 --MyBoundary
@@ -39,11 +39,11 @@ Content-Disposition: form-data; name="weight"
 --MyBoundary
 Content-Disposition: form-data; name="owner"
 
-Ulla
+37
 --MyBoundary
 Content-Disposition: form-data; name="birthdate"
 
-08.10.2022
+2022-10-08
 --MyBoundary
 Content-Disposition: form-data; name="image"; filename="cat.jpg"
 Content-Type: image/jpeg
@@ -52,22 +52,25 @@ Content-Type: image/jpeg
 --MyBoundary--
 
 ### edit existing cat
-PUT {{apiUrl}}/cats/3
+PUT {{apiUrl}}/cats/41
 Content-Type: application/json
 
 {
     "weight": 6,
-    "owner": "Uusi omistaja"
+    "owner": 37
 }
 
 ### delete cat by id
 DELETE {{apiUrl}}/cats/2
 
+### Get all cats belonging to user 37
+GET {{apiUrl}}/cats/user/37
+
 ### get users
 GET {{apiUrl}}/users
 
 ### get user by id
-GET {{apiUrl}}/users/3001
+GET {{apiUrl}}/users/1
 
 ### get user by id (FAIL: not found)
 GET {{apiUrl}}/users/98
@@ -85,7 +88,7 @@ Content-Type: application/json
   }
 
 ### edit existing user
-PUT {{apiUrl}}/users/3001
+PUT {{apiUrl}}/users/1
 Content-Type: application/json
 
 {
@@ -95,4 +98,4 @@ Content-Type: application/json
   }
 
 ### delete user by id
-DELETE {{apiUrl}}/users/3000
+DELETE {{apiUrl}}/users/37

@@ -5,6 +5,7 @@ import {
   getCatById,
   postCat,
   putCat,
+  getCatsByUserId,
 } from '../controllers/cat-controller.js';
 
 import logger from '../../middlewares/logger.js';
@@ -22,6 +23,8 @@ catRouter
   .post(upload.single('image'), postCat);
 // Kaikki /api/v1/cats/:id reitit
 catRouter.route('/:id').get(getCatById).delete(deleteCat).put(putCat);
+
+catRouter.route('/user/:id').get(getCatsByUserId);
 
 export default catRouter;
 

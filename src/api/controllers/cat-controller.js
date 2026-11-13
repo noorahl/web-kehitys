@@ -4,31 +4,26 @@ import {
   listAllCats,
   modifyCat,
   removeCat,
+  findCatByUserId,
 } from '../models/cat-model.js';
 
-const getAllCats = (req, res) => {
+const getAllCats = async (req, res) => {
   //const cats = [{cat_id: 1, name: 'Misu'}];
-
   console.log('Ollaan nyt controllerissa');
   // res.json(listAllCats());
-  const cats = listAllCats();
+  const cats = await listAllCats();
 
   // esimerkki siitä että middleware on muokannut req-objektia
   res.json({
-    message: 'Cats reittiin lisätty aikaleima',
+    message: 'Tässä kissat',
     time: req.requestTime,
     data: cats,
   });
 };
 
-const getCatById = (req, res) => {
-  //console.log(req);
-  // PALAUTTAKAA VAIN YKSI KISSA req.params.id haulla
-  // 1. Haetaan ID URL-parametrista ja muunnetaan numeroksi
-  const id = Number(req.params.id);
-  //console.log(id);
+const getCatById = async (req, res) => {
   // 2. Haetaan kissa modelilta
-  const cat = findCatById(id);
+  const cat = await findCatById(req.params.id);
   // 3. Jos kissaa ei löydy, palautetaan 404
   if (!cat) {
     return res.status(404).json({message: 'Kissaa ei löytynyt'});
@@ -37,13 +32,24 @@ const getCatById = (req, res) => {
   res.json(cat);
 };
 
-const postCat = (req, res) => {
+const getCatsByUserId = async (req, res) => {
+  // TODO: implement, use findCatByUserId() model and add route to user router, and api test to tests
+  const userId = Number(req.params.id);
+  const cats = await findCatByUserId(userId);
+
+  if (!cats) {
+    return res.status(404).json({message: 'Kissaa ei löytynyt'});
+  }
+  res.json(cats);
+};
+
+const postCat = async (req, res) => {
   console.log('request', req.body);
   console.log(req.file);
   console.log(req.file.filename);
   req.body.filename = req.file.filename;
 
-  const result = addCat(req.body);
+  const result = await addCat(req.body);
   if (result) {
     res.status(201);
     res.json({message: 'New cat added.', result});
@@ -52,8 +58,8 @@ const postCat = (req, res) => {
   }
 };
 
-const deleteCat = (req, res) => {
-  const result = removeCat(Number(req.params.id));
+const deleteCat = async (req, res) => {
+  const result = await removeCat(Number(req.params.id));
   if (result) {
     res.json({message: 'Cat removed!'});
   } else {
@@ -61,9 +67,9 @@ const deleteCat = (req, res) => {
   }
 };
 
-const putCat = (req, res) => {
+const putCat = async (req, res) => {
   // in real life, all input data (req.body) should be validated before using it
-  const result = modifyCat(Number(req.params.id), req.body);
+  const result = await modifyCat(Number(req.params.id), req.body);
   if (result) {
     res.json({message: 'Cat updated!'});
   } else {
@@ -71,4 +77,4 @@ const putCat = (req, res) => {
   }
 };
 
-export {getAllCats, getCatById, postCat, deleteCat, putCat};
+export {getAllCats, getCatById, postCat, deleteCat, putCat, getCatsByUserId};

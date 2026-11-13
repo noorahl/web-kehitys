@@ -6,38 +6,49 @@ import {
   removeUser,
 } from '../models/user-model.js';
 
-const getAllUsers = (req, res) => {
-  res.json(listAllUsers());
+const getAllUsers = async (req, res) => {
+  const users = await listAllUsers();
+  res.json({
+    message: 'Tässä Käyttäjät',
+    time: req.requestTime,
+    data: users,
+  });
 };
 
-const getUserById = (req, res) => {
-  const id = Number(req.params.id);
-  const user = findUserById(id);
+const getUserById = async (req, res) => {
+  const user = await findUserById(req.params.id);
   if (!user) {
-    return res.status(404).json({message: 'Not found'});
+    return res.status(404).json({message: 'Käyttäjää ei löytynyt'});
   }
   res.json(user);
 };
 
-const addNewUser = (req, res) => {
-  console.log('request', req.body);
-  const id = addUser(req.body);
-  res.status(201).json({user_id: id});
-};
+const addNewUser = async (req, res) => {
+  const result = await addUser(req.body);
 
-const updateUser = (req, res) => {
-  const result = modifyUser(Number(req.params.id), req.body);
   if (result) {
-    res.json({message: 'User item updated'});
+    res.status(201).json({
+      message: 'New user added.',
+      result,
+    });
   } else {
-    res.status(404).json({error: 404, message: 'Not found'});
+    res.sendStatus(400);
   }
 };
 
-const deleteUser = (req, res) => {
-  const result = removeUser(Number(req.params.id));
+const updateUser = async (req, res) => {
+  const result = await modifyUser(Number(req.params.id), req.body);
   if (result) {
-    res.json({message: 'User item deleted.'});
+    res.json({message: 'User updated!'});
+  } else {
+    res.status(404).json({error: 404, message: 'Not found.'});
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const result = await removeUser(Number(req.params.id));
+  if (result) {
+    res.json({message: 'User removed!'});
   } else {
     res.status(404).json({error: 404, message: 'Not found.'});
   }
