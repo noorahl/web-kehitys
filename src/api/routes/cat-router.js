@@ -7,11 +7,11 @@ import {
   putCat,
   getCatsByUserId,
 } from '../controllers/cat-controller.js';
-
 import logger from '../../middlewares/logger.js';
 
-// multer imports
+// multer and sharp imports
 import multer from 'multer';
+import {createThumbnail} from '../../middlewares/upload.js';
 const upload = multer({dest: 'uploads/'});
 
 const catRouter = express.Router();
@@ -20,7 +20,7 @@ const catRouter = express.Router();
 catRouter
   .route('/')
   .get(logger, getAllCats)
-  .post(upload.single('image'), postCat);
+  .post(upload.single('image'), createThumbnail, postCat);
 // Kaikki /api/v1/cats/:id reitit
 catRouter.route('/:id').get(getCatById).delete(deleteCat).put(putCat);
 
