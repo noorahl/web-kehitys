@@ -20,7 +20,7 @@ Content-Type: application/json
     "birthdate": "2023-12-25",
     "weight": 4,
     "owner": 39,
-    "filename": "rolle.jpg"
+    "filename": "cat.jpg"
 }
 
 
