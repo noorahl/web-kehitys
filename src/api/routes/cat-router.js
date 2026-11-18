@@ -9,10 +9,7 @@ import {
 } from '../controllers/cat-controller.js';
 import logger from '../../middlewares/logger.js';
 
-// multer and sharp imports
-import multer from 'multer';
-import {createThumbnail} from '../../middlewares/upload.js';
-const upload = multer({dest: 'uploads/'});
+import {upload, createThumbnail} from '../../middlewares/upload.js';
 
 const catRouter = express.Router();
 

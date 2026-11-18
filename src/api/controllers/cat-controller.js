@@ -21,60 +21,74 @@ const getAllCats = async (req, res) => {
   });
 };
 
-const getCatById = async (req, res) => {
-  // 2. Haetaan kissa modelilta
+const getCatById = async (req, res, next) => {
   const cat = await findCatById(req.params.id);
-  // 3. Jos kissaa ei löydy, palautetaan 404
+
   if (!cat) {
-    return res.status(404).json({message: 'Kissaa ei löytynyt'});
+    const error = new Error('Kissaa ei löytynyt');
+    error.status = 404;
+    return next(error);
   }
-  // 4. Jos kissa löytyy, palautetaan sen tiedot
+
   res.json(cat);
 };
 
-const getCatsByUserId = async (req, res) => {
-  // TODO: implement, use findCatByUserId() model and add route to user router, and api test to tests
+const getCatsByUserId = async (req, res, next) => {
   const userId = Number(req.params.id);
   const cats = await findCatByUserId(userId);
 
   if (!cats) {
-    return res.status(404).json({message: 'Kissaa ei löytynyt'});
+    const error = new Error('Kissaa ei löytynyt');
+    error.status = 404;
+    return next(error);
   }
+
   res.json(cats);
 };
 
-const postCat = async (req, res) => {
+const postCat = async (req, res, next) => {
+  // check if file is rejected by multer
+  if (!req.file) {
+    const error = new Error('Invalid or missing file');
+    error.status = 400;
+    return next(error);
+  }
+
   console.log('request', req.body);
   console.log(req.file);
   console.log(req.file.filename);
   req.body.filename = req.file.filename;
+  req.body.owner = res.locals.user.user_id;
 
   const result = await addCat(req.body);
-  if (result) {
-    res.status(201);
-    res.json({message: 'New cat added.', result});
-  } else {
-    res.sendStatus(400);
+  if (result.error) {
+    return next(new Error(result.error));
   }
+  res.status(201).json({message: 'New media item added.', ...result});
 };
 
-const deleteCat = async (req, res) => {
-  const result = await removeCat(Number(req.params.id));
-  if (result) {
-    res.json({message: 'Cat removed!'});
-  } else {
-    res.status(404).json({error: 404, message: 'Not found.'});
+const deleteCat = async (req, res, next) => {
+  const result = await removeCat(Number(req.params.id), res.locals.user);
+
+  if (!result) {
+    const error = new Error('Not found.');
+    error.status = 404;
+    return next(error);
   }
+
+  res.json({message: 'Cat removed!'});
 };
 
-const putCat = async (req, res) => {
-  // in real life, all input data (req.body) should be validated before using it
+const putCat = async (req, res, next) => {
   const result = await modifyCat(Number(req.params.id), req.body);
-  if (result) {
-    res.json({message: 'Cat updated!'});
-  } else {
-    res.status(404).json({error: 404, message: 'Not found.'});
+
+  if (!result) {
+    const error = new Error('Not found.');
+    error.status = 404;
+    return next(error);
   }
+
+  res.json({message: 'Cat updated!'});
 };
 
 export {getAllCats, getCatById, postCat, deleteCat, putCat, getCatsByUserId};
